@@ -24,7 +24,119 @@
         
         <link rel="stylesheet" href="/css/fonts.min.css">
         <link rel="stylesheet" href="/css/particlex.css">
-    <meta name="generator" content="Hexo 6.3.0"></head>
+    <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
     <body>
         <div id="loading" style="height: 100vh; width: 100vw; left: 0; top: 0; position: fixed; display: flex; z-index: 2147483647; background: #fff; transition: opacity 0.3s ease-out; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none">
     <div style="width: 50vmin; height: 50vmin; margin: auto; padding: 50px; border-radius: 50%; display: flex; border: solid 10px #a3ddfb">
@@ -159,7 +271,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/math-help/" style="color: #00bcd4">math_help</a>
+                <a href="/tags/math-help/" style="color: #ffa2c4">math_help</a>
             </span>
             
         </span>
@@ -167,9 +279,9 @@
     </div>
     
     <div class="content" v-pre>
-        <p>此贴记录数学笔记中常用的代码或符号</p>
-<span id="more"></span>
-<pre><code class="数学符号">% 关系符号
+        <p>此贴记录数学笔记中常用的代码或符号<br>
+<span id="more"></span></p>
+<pre class="数学符号"><code>% 关系符号
 含义            符号            命令
 属于            ∈              \in
 交集            ∩              \cap
@@ -181,7 +293,7 @@
 
 % 集合符号
 含义            符号            命令
-实数集           R              \mathbb&#123;R&#125;
+实数集           R              \mathbb{R}
 空集            ∅              \varnothing
 
 % 其它符号
@@ -214,9 +326,8 @@ upsilon     Υ           \Upsilon        υ           \upsilon
 phi         Φ           \Phi            ϕ           \phi
                                         φ           \varphi
 chi         X           X               χ           \chi
-psi         Ψ           \Psi            ψ           \psi
-</code></pre>
-<pre><code class="代码">html代码
+psi         Ψ           \Psi            ψ           \psi</code></pre>
+<pre class="代码"><code>html代码
 名称                代码
 居中                &lt;center&gt;Text...&lt;/center&gt;
 加粗                &lt;b&gt;Text...&lt;/b&gt;
@@ -228,6 +339,15 @@ Latex代码
 缩进2字符            $\qquad$
 下标                 _                                   # 例:x_n
 </code></pre>
+<pre class="插入表格(输入样式)"><code>| 标题1 | 标题2 | 标题3 |
+| ------ | ------ | ------ |
+| 文本好短 | 文本不短也不长 | 文本好长文本好长文本好长 |
+| 文本好长文本好长文本好长 | 文本好短 | 文本不短也不长 |</code></pre>
+<p>插入表格(效果展示)<br>
+| 标题1 | 标题2 | 标题3 |<br>
+| ------ | ------ | ------ |<br>
+| 文本好短 | 文本不短也不长 | 文本好长文本好长文本好长 |<br>
+| 文本好长文本好长文本好长 | 文本好短 | 文本不短也不长 |</p>
 
     </div>
     
