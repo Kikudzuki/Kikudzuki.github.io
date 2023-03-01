@@ -279,12 +279,119 @@ mjx-container[display="true"] + br {
     </div>
     
     <div class="content" v-pre>
-        <p><b>实验目的：</b><br>
-<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>掌握交换机的常用操作命令及配置方法，包括交换机Console口令、TELNET口令、用户名和密码的配置。<br>
+        <p><b>实验目的：</b></p>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>掌握交换机的常用操作命令及配置方法，包括交换机Console口令、TELNET口令、用户名和密码的配置。<br>
 <span id="more"></span></p>
-<p><b>实验拓扑结构：</b><br>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.1%20%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png"></p>
+<p><b>实验拓扑结构：</b></p>
+<p><img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png"></p>
 <p><b>实验过程：</b></p>
+<h5 id="配置计算机与交换机的ip地址">1. 配置计算机与交换机的ip地址</h5>
+<h6 id="将计算机与交换机连接">1.1 将计算机与交换机连接</h6>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>首先用配置线将计算机与交换机连接，如图1.1所示；</p>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="6.787ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 3000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g><g data-mml-node="mstyle" transform="translate(2000,0)"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>（1）
+计算机选择RS232；<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="6.787ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 3000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g><g data-mml-node="mstyle" transform="translate(2000,0)"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>（2）
+交换机选择Console.</p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.1%20%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png" alt="1.1 拓扑结构"><br>
+
+<center>
+<font size="1">1.1 拓扑结构</font>
+</center>
+<h5 id="设置计算机和交换机ip地址">1.2 设置计算机和交换机ip地址</h5>
+<h6 id="计算机配置ip地址">1.2.1 计算机配置ip地址；</h6>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>依次点击：PC0—Desktop—IP
+Configuration，配置ip地址，如图1.2所示（本次实验不涉及网关和DNS）。</p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.2%20%E8%AE%A1%E7%AE%97%E6%9C%BAip%E5%9C%B0%E5%9D%80.png" alt="图1.2 计算机ip地址"><br>
+
+<center>
+<font size="1">图1.2 计算机ip地址</font>
+</center>
+<h6 id="配置交换机管理ip地址">1.2.2 配置交换机管理ip地址；</h6>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>首先将计算机进入终端，依次点击：PC0—Desktop—Terminal—确定，如图1.3所示。</p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.3%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%88%E7%AB%AF.png" alt="图1.3 计算机终端"><br>
+
+<center>
+<font size="1">图1.3 计算机终端</font>
+</center>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>然后依次输入如下命令：</p>
+<pre class="命令"><code>Switch&gt;enable
+Switch#configure terminal
+Switch(config)#interface vlan 1
+Switch(config-if)#ip address 192.168.1.254 255.255.255.0
+Switch(config-if)#no shutdown
+Switch(config-if)#exit</code></pre>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>如图1.4，ip地址配置成功。</p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.4%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%A1%E7%90%86ip%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE.png" alt="图1.4 交换机管理ip地址配置"><br>
+
+<center>
+<font size="1">图1.4 交换机管理ip地址配置</font>
+</center>
+<h5 id="配置用户名和密码">1.3 配置用户名和密码</h5>
+<h6 id="配置console密码">1.3.1 配置console密码</h6>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>输入如下命令，配置console密码。</p>
+<pre class="命令"><code>Switch&gt;enable
+Switch#configure terminal
+Switch(config)#line console 0
+Switch(config-line)#password cisco
+Switch(config-line)#login
+Switch(config-line)#login local
+Switch(config-line)#exit
+Switch(config)#username Switch password switch
+Switch(config)#username Switch privilege 15 password switch
+Switch(config)#
+Switch#</code></pre>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>如图1.5所示：</p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.5%20%E9%85%8D%E7%BD%AEconsole.png" alt="图1.5 配置console"><br>
+
+<center>
+<font size="1">图1.5 配置console</font>
+</center>
+<h6 id="特权模式密码全局密码">1.3.2 特权模式密码（全局密码）</h6>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>输入如下命令，配置特权模式密码。</p>
+<pre class="命令"><code>Switch&gt;enable
+Switch#configure terminal
+Switch(config)#line console 0
+Switch(config-line)#password cisco
+Switch(config-line)#login
+Switch(config-line)#login local
+Switch(config-line)#exit
+Switch(config)#username Switch password switch
+Switch(config)#username Switch privilege 15 password switch
+Switch(config)#
+Switch#</code></pre>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>结果如图1.6所示。</p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.6%20%E9%85%8D%E7%BD%AE%E7%89%B9%E6%9D%83%E6%A8%A1%E5%BC%8F%E5%AF%86%E7%A0%81.png" alt="图1.6 配置特权模式密码"><br>
+
+<center>
+<font size="1">图1.6 配置特权模式密码</font>
+</center>
+<h6 id="配置虚拟通道密码telnet">1.3.3 配置虚拟通道密码（TELNET）</h6>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>输入如下命令，配置特权模式密码。</p>
+<pre class="命令"><code>Switch#configure terminal
+Switch(config)#line vty 0 5
+Switch(config-line)#password telnet
+Switch(config-line)#login
+Switch(config-line)#login local
+Switch(config-line)#exit
+Switch(config)#exit
+Switch#</code></pre>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>结果如图1.7所示。</p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.7%20%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E9%80%9A%E9%81%93%E5%AF%86%E7%A0%81.png" alt="图1.7 配置虚拟通道密码"><br>
+
+<center>
+<font size="1">图1.7 配置虚拟通道密码</font>
+</center>
+<p><b>实验结果测试（截屏）：</b></p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.8%20%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E5%B1%95%E7%A4%BA%EF%BC%88%E4%B8%8A%EF%BC%89.png" alt="图1.8 配置信息展示（上）"><br>
+
+<center>
+<font size="1">图1.8 配置信息展示（上）</font>
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C%E4%B8%80%20%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/1.9%20%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E5%B1%95%E7%A4%BA%EF%BC%88%E4%B8%8B%EF%BC%89.png" alt="图1.9 配置信息展示（下）"><br>
+
+<center>
+<font size="1">图1.9 配置信息展示（下）</font>
+</center>
 
     </div>
     
