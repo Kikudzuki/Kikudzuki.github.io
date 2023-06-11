@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8">
+        <title>PPP协议及验证、多区域OSPF路由配置 | Kikudzukiの未来</title>
+        <meta name="author" content="Kikudzuki">
+        <meta name="description" content="学习之路">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+        <link rel="icon" href="/images/avatar1.jpg">
+        <script src="https://cdn.staticfile.org/vue/3.2.45/vue.global.prod.min.js"></script>
+        <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/github.min.css">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+        
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+        
+        
+        <script src="https://cdn.staticfile.org/KaTeX/0.16.4/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.16.4/contrib/auto-render.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.16.4/katex.min.css">
+        
+        
+        <link rel="stylesheet" href="/css/fonts.min.css">
+        <link rel="stylesheet" href="/css/particlex.css">
+    <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+    <body>
+        <div id="loading" style="height: 100vh; width: 100vw; left: 0; top: 0; position: fixed; display: flex; z-index: 2147483647; background: #fff; transition: opacity 0.3s ease-out; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none">
+    <div style="width: 50vmin; height: 50vmin; margin: auto; padding: 50px; border-radius: 50%; display: flex; border: solid 10px #a3ddfb">
+        <div style="margin: auto; text-align: center">
+            <h2>LOADING</h2>
+            <p>加载过慢请开启缓存，浏览器默认开启</p>
+            <img src="/images/loading.gif" style="height: 50px; border-radius: 0">
+        </div>
+    </div>
+</div>
+
+        <div id="layout">
+            <transition name="into">
+            <div id="main" v-show="showpage" style="display: -not-none">
+                <nav id="menu">
+    <div class="desktop-menu">
+        <a class="title" href="/">
+            <span>KIKUDZUKIの未来</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </div>
+    <div :class="&quot;phone-menu &quot; + menushow" id="phone-menu">
+        <div class="curtain" @click="menushow = !menushow" v-show="menushow"></div>
+        <div class="title" @click="menushow = !menushow">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;KIKUDZUKIの未来</span>
+        </div>
+        <transition name="slide">
+        <div class="items" v-show="menushow">
+            
+            <a href="/">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-house fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                </div>
+            </a>
+            
+            <a href="/about">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-id-card fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                </div>
+            </a>
+            
+            <a href="/archives">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-box-archive fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                </div>
+            </a>
+            
+            <a href="/categories">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-bookmark fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                </div>
+            </a>
+            
+            <a href="/tags">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                </div>
+            </a>
+            
+        </div>
+        </transition>
+    </div>
+</nav>
+
+                <div class="article">
+    <div>
+        <h1>PPP协议及验证、多区域OSPF路由配置 </h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/5/31
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                路由与交换技术
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF%E5%AE%9E%E9%AA%8C/" style="color: #00bcd4">路由与交换技术实验</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><b>实验目的：</b></p>
+<ol type="1">
+<li>掌握PPP协议配置方法；</li>
+<li>掌握PPP协议PAP验证方法；</li>
+<li>掌握PPP协议CHAP验证方法；</li>
+<li>掌握多区域OSPF动态路由协议配置方法；<br>
+<span id="more"></span></li>
+</ol>
+<p><b>实验拓扑结构：</b></p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/1.png"><br>
+
+<center>
+图1：拓扑结构
+</center>
+<p><b>实验过程：</b></p>
+<pre class="pc0:"><code>IP:172.30.10.1/24
+网关：172.30.10.254</code></pre>
+<pre class="pc4:"><code>IP:172.30.20.1/24
+网关：172.30.20.254</code></pre>
+<pre class="pc1:"><code>IP:172.30.40.1/24
+网关：172.30.40.254</code></pre>
+<pre class="pc2:"><code>IP:192.168.20.1/24
+网关：192.168.20.254</code></pre>
+<pre class="pc3:"><code>IP:192.168.40.1/24
+网关：192.168.40.254</code></pre>
+<pre class="pc5:"><code>IP:192.168.50.1/24
+网关：192.168.50.254</code></pre>
+<pre class="switch0:"><code>Switch&gt;enable
+Switch#configure terminal
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#interface f0/1
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#interface f0/11
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#switchport mode trunk
+Switch(config-if)#end
+Switch#</code></pre>
+<pre class="router0:"><code>Router&gt;enable
+Router#configure terminal
+Router(config)#interface f0/0.1
+Router(config-subif)#encapsulation dot1q 10
+Router(config-subif)#ip address 172.30.10.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#interface f0/0.2
+Router(config-subif)# encapsulation dot1q 20
+Router(config-subif)#ip address 172.30.10.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#interface f0/1
+Router(config-if)#ip address 172.30.30.1 255.255.255.0
+Router(config-if)#exit
+Router(config)#router ospf 1000
+Router(config-route)#network 172.30.10.0 0.0.0.255 area 0
+Router(config-route)#network 172.30.20.0 0.0.0.255 area 0
+Router(config-route)#network 172.30.30.0 0.0.0.255 area 0
+Router(config-route)#end
+Router#</code></pre>
+<pre class="router1:"><code>Router&gt;enable
+Router#configure terminal
+Router(config)#interface f1/0
+Router(config-if)#ip address 172.30.30.2 255.255.255.0
+Router(config-if)#exit
+Router(config)#interface f0/0
+Router(config-if)#ip address 172.30.40.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#interface s3/0
+Router(config-if)#clock rate 64000
+Router(config-if)#ip address 192.168.10.1 255.255.255.0
+Router(config-if)#exit
+Router(config)#router ospf 1000
+Router(config-route)#network 172.30.30.0 0.0.0.255 area 0
+Router(config-route)#network 172.30.40.0 0.0.0.255 area 0
+Router(config-route)#network 192.168.10.0 0.0.0.255 area 1
+Router(config-route)#exit
+% 配置pap认证 验证端
+Router(config)#username cisco password 123
+Router(config)#interface s3/0
+Router(config-if)#encapsulation ppp
+Router(config-if)#ppp authentication pap
+Router(config-if)#end
+Router#</code></pre>
+<pre class="router2:"><code>Router&gt;enable
+Router#configure terminal
+Router(config)#interface f0/0
+Router(config-if)#ip address 192.168.20.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#interface s3/0
+Router(config-if)#clock rate 64000
+Router(config-if)#ip address 192.168.10.2 255.255.255.0
+Router(config-if)#exit
+Router(config)#interface s2/0
+Router(config-if)#clock rate 64000
+Router(config-if)#ip address 192.168.30.1 255.255.255.0
+Router(config-if)#exit
+Router(config)#router ospf 1000
+Router(config-route)#network 192.168.10.0 0.0.0.255 area 1
+Router(config-route)#network 192.168.20.0 0.0.0.255 area 1
+Router(config-route)#network 192.168.30.0 0.0.0.255 area 1
+Router(config-route)#exit
+% 配置pap认证 被验证端
+Router(config)#interface s3/0
+Router(config-if)#encapsulation ppp
+Router(config-if)#ppp pap sent-username cisco password 123
+Router(config-if)#exit
+% 配置chap双向认证
+Router(config)#username Router password 123
+Router(config)#interface s2/0
+Router(config-if)#encapsulation ppp
+Router(config-if)#ppp authentication chap
+Router(config-if)#end
+Router#</code></pre>
+<pre class="router3:"><code>Router&gt;enable
+Router#configure terminal
+Router(config)#interface f0/0
+Router(config-if)#ip address 192.168.40.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#interface f1/0
+Router(config-if)#ip address 192.168.50.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#interface s2/0
+Router(config-if)#clock rate 64000
+Router(config-if)#ip address 192.168.30.2 255.255.255.0
+Router(config-if)#exit
+Router(config)#router ospf 1000
+Router(config-route)#network 192.168.30.0 0.0.0.255 area 1
+Router(config-route)#network 192.168.40.0 0.0.0.255 area 1
+Router(config-route)#network 192.168.50.0 0.0.0.255 area 1
+Router(config-route)#exit
+% 配置chap双向认证
+Router(config)#username Router password 123
+Router(config)#interface s2/0
+Router(config-if)#encapsulation ppp
+Router(config-if)#ppp authentication chap
+Router(config-if)#end
+Router#</code></pre>
+<p><b>实验结果测试（截屏）：</b></p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/2.png"><br>
+
+<center>
+图2：PC0 ping PC4
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/3.png"><br>
+
+<center>
+图3：PC0 ping PC1
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/4.png"><br>
+
+<center>
+图4：PC0 ping PC2
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/5.png"><br>
+
+<center>
+图5：PC0 ping PC3
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/6.png"><br>
+
+<center>
+图6：PC0 ping PC5
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/7.png"><br>
+
+<center>
+图7：PC0 ping Router0
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/8.png"><br>
+
+<center>
+图8：PC0 ping Router1
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/9.png"><br>
+
+<center>
+图9：PC0 ping Router2
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/10.png"><br>
+
+<center>
+图10：PC0 ping Router3
+</center>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div class="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Kikudzukiの未来
+            <span class="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;Kikudzuki
+        </div>
+        <div>Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp; <a target="_blank" rel="noopener" href="https://github.com/argvchs/hexo-theme-particlex">ParticleX Theme</a></div>
+        
+    </div>
+</footer>
+
+            </div>
+            </transition>
+            <div id="showimg">
+                <img id="showimg-content">
+            </div>
+        </div>
+        <script src="/js/functions.js"></script>
+<script src="/js/particlex.js"></script>
+
+
+
+
+
+
+
+    </body>
+</html>

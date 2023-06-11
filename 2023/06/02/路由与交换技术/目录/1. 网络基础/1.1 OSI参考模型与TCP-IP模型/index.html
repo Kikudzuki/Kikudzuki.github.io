@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8">
+        <title>OSI参考模型与TCP-IP模型 | Kikudzukiの未来</title>
+        <meta name="author" content="Kikudzuki">
+        <meta name="description" content="学习之路">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+        <link rel="icon" href="/images/avatar1.jpg">
+        <script src="https://cdn.staticfile.org/vue/3.2.45/vue.global.prod.min.js"></script>
+        <script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/github.min.css">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+        
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+        
+        
+        <script src="https://cdn.staticfile.org/KaTeX/0.16.4/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.16.4/contrib/auto-render.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.16.4/katex.min.css">
+        
+        
+        <link rel="stylesheet" href="/css/fonts.min.css">
+        <link rel="stylesheet" href="/css/particlex.css">
+    <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+    <body>
+        <div id="loading" style="height: 100vh; width: 100vw; left: 0; top: 0; position: fixed; display: flex; z-index: 2147483647; background: #fff; transition: opacity 0.3s ease-out; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none">
+    <div style="width: 50vmin; height: 50vmin; margin: auto; padding: 50px; border-radius: 50%; display: flex; border: solid 10px #a3ddfb">
+        <div style="margin: auto; text-align: center">
+            <h2>LOADING</h2>
+            <p>加载过慢请开启缓存，浏览器默认开启</p>
+            <img src="/images/loading.gif" style="height: 50px; border-radius: 0">
+        </div>
+    </div>
+</div>
+
+        <div id="layout">
+            <transition name="into">
+            <div id="main" v-show="showpage" style="display: -not-none">
+                <nav id="menu">
+    <div class="desktop-menu">
+        <a class="title" href="/">
+            <span>KIKUDZUKIの未来</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </div>
+    <div :class="&quot;phone-menu &quot; + menushow" id="phone-menu">
+        <div class="curtain" @click="menushow = !menushow" v-show="menushow"></div>
+        <div class="title" @click="menushow = !menushow">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;KIKUDZUKIの未来</span>
+        </div>
+        <transition name="slide">
+        <div class="items" v-show="menushow">
+            
+            <a href="/">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-house fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                </div>
+            </a>
+            
+            <a href="/about">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-id-card fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                </div>
+            </a>
+            
+            <a href="/archives">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-box-archive fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                </div>
+            </a>
+            
+            <a href="/categories">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-bookmark fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                </div>
+            </a>
+            
+            <a href="/tags">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                </div>
+            </a>
+            
+        </div>
+        </transition>
+    </div>
+</nav>
+
+                <div class="article">
+    <div>
+        <h1>OSI参考模型与TCP-IP模型 </h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/6/2
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                路由与交换技术
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #00a596">路由与交换技术</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>在20世纪70年代末，ISO(International
+Organization for
+Standardization,国际标准化组织)为了解决只有一家制造商生产的计算机才能彼此通信的局面，开发了OSI(Open
+Systems Interconnection,开放系统互连)参考模型。</p>
+<p><b>本节学习内容：</b></p>
+<ol type="1">
+<li>网络协议</li>
+<li>OSI参考模型</li>
+<li>TCP/IP模型<br>
+<span id="more"></span></li>
+</ol>
+<h4 id="网络协议">1. 网络协议</h4>
+<h5 id="定义">1.1 定义</h5>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>网络协议是为计算机网络中进行数据交换而建立的规则、标准或约定的集合。</p>
+<h5 id="网络协议三要素">1.2 网络协议三要素</h5>
+<ol type="1">
+<li>语义：需要发出何种控制信息，完成何种动作以及做出何种响应；</li>
+<li>语法：数据与控制的结构与格式；</li>
+<li>时序：事件实现顺序的详细说明。</li>
+</ol>
+<h4 id="osi参考模型">2. OSI参考模型</h4>
+<h5 id="osi参考模型7层结构">2.1 OSI参考模型7层结构</h5>
+<center>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">应用层(Application Layer)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">表示层(Presentation Layer)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">会话层(Session Layer)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">传输层(Transport Layer)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">网络层(Network Layer)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">数据链路层(Data Link Layer)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">物理层(Physical Layer)</td>
+</tr>
+</tbody>
+</table>
+图一：OSI参考模型结构
+</center>
+<br><br>
+
+<center>
+<b>表一：OSI参考模型7层结构功能</b>
+</center>
+<table>
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">层次结构</th>
+<th style="text-align: left;">功能</th>
+<th style="text-align: left;">协议</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">应用层</td>
+<td style="text-align: left;">为应用程序提供服务</td>
+<td style="text-align: left;">HTTP、TFTP、FTP、NFS</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">表示层</td>
+<td style="text-align: left;">将数据进行加密、压缩和转换</td>
+<td style="text-align: left;">Telnet、Rlogin、SNMP</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">会话层</td>
+<td style="text-align: left;">建立、管理和维护会话</td>
+<td style="text-align: left;">SMTP、DNS</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">传输层</td>
+<td style="text-align: left;">端到端连接，提供可靠或不可靠的传输，在重传之前执行纠错</td>
+<td style="text-align: left;">TCP、UDP</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">网络层</td>
+<td style="text-align: left;">路由选择，提供逻辑地址，路由器使用它们来选择最佳路径</td>
+<td style="text-align: left;">IP、ICMP、ARP、RARP、AKP、UUCP</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">数据链路层</td>
+<td style="text-align: left;">提供介质访问和链路管理</td>
+<td style="text-align: left;">FDDI、Ethernet、Arpanet、PDN、PPP</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">物理层</td>
+<td style="text-align: left;">物理拓扑，在设备之间传输比特</td>
+<td style="text-align: left;">IEEE 802.1A、IEEE 802.2到IEEE 802.11</td>
+</tr>
+</tbody>
+</table>
+<h5 id="数据封装与解封装">2.2 数据封装与解封装</h5>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>互联网上的任意两台设备相互通信时，都要经历数据的“封装”过程。OSI参考模型的每一层数据往下发送的时候，都使用相关协议将数据封装起来。每一层都只能与其对等层相互通信。<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>为了便于通信和交换信息，每一层都使用PDU(Protocol
+Data
+Unit,协议数据单元)。PDU包含模型在每一层给数据添加的控制信息。这些控制信息会被放在数据字段前的报头中，也可能会放在数据字段后的报尾中。</p>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/1.1/20230602104152.png"><br>
+
+<center>
+图二：数据封装过程
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/1.1/20230602104253.png"><br>
+
+<center>
+图三：数据解封装过程
+</center>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/1.1/20230602104349.png"><br>
+
+<center>
+图四：PDU
+</center>
+<p>注：图二-图四是搬运wuhongbin!!!的博客，详细见参考。<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="1.877ex" height="2.021ex" role="img" focusable="false" viewBox="0 -893.3 829.7 893.3"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"></g><g data-mml-node="TeXAtom" transform="translate(33,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mo"><path data-c="5B" d="M118 -250V750H255V710H158V-210H255V-250H118Z"></path></g><g data-mml-node="mn" transform="translate(278,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(778,0)"><path data-c="5D" d="M22 710V750H159V-250H22V-210H119V710H22Z"></path></g></g></g></g></g></svg></mjx-container></span></p>
+<h5 id="数据的传输">2.3 数据的传输</h5>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/1.1/20230602105342.png"><br>
+
+<center>
+图五：OSI参考模型数据的传输
+</center>
+<h4 id="tcpip模型">3. TCP/IP模型</h4>
+<h5 id="协议栈">3.1 协议栈</h5>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>TCP/IP(Transmission
+Control Protocol?Internet
+Protocol,传输控制协议/网间协议)是开放系统互连协议中最早的协议栈之一，也是目前最顽强和应用最广的协议栈。TCP/IP不仅是Internet的基础协议，也是一种数据打包和寻址的标准方法。<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>网络通信中，将多层上的多种协议按照层次顺序组合在一起，构成了协议栈(Protocol
+Stack)，也成为协议簇(Protocol Suite)。<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>主要的协议栈有OSI协议栈、NetWare
+SPX/IPX协议栈、TCP/IP协议栈、IBM/Microsoft协议簇、AppleTalk协议。</p>
+<h5 id="tcpip模型-1">3.2 TCP/IP模型</h5>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>根据TCP/IP协议簇的协议来命名PDU：</p>
+<ul>
+<li><ol type="1">
+<li>数据(Data)：应用层的PDU。</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>数据段(Segment)：传输层的PDU。</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>数据包(Packet)：网络层的PDU。</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li>帧(Frame)：网络接入层的PDU。</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li>比特(bit)：介质传递数据的PDU。</li>
+</ol></li>
+</ul>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>TCP/IP模型结构：</p>
+<ul>
+<li><ol type="1">
+<li>应用层<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>TCP/IP
+协议栈的应用层大致对应于 OSI参考模型的应用层和表示层。</li>
+</ol>
+<ul>
+<li>应用层常用的协议如下：
+<ul>
+<li><ol type="1">
+<li>域名系统(DNS):TCP/UDP端口53。</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>超文本传输协议(HTTP):TCP端口80。</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>简单邮件传输协议(SMTP):TCP端口25。</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li>邮局协议(POP):TCP端口110。</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li>Telnet:TCP端口23</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li>动态主机配置协议:UDP端口67和端口68。</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li>文件传输协议(FTP):TCP端口20和端口21。</li>
+</ol></li>
+</ul></li>
+</ul></li>
+<li><ol start="2" type="1">
+<li>传输层<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>TCP/IP
+协议栈的传输层大致对应于OSI参考模型的会话层和传输层。TCP/IP模型在传输层定义了两种服务质量不同的协议,即TCP(Transmission
+Control Protocol,传输控制协议)和 UDP(User Datagram
+Protocol,用户数据报协议)。<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>其中，TCP一个是面向连接的，可靠的协议。UDP是一个面向无连接的，不可靠的协议。</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>网络层<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>TCP/IP协议栈的网络层是整个TCP/IP协议栈的核心，网络层由在两个主机之间通信所必需的协议和过程组成,它负责数据报文路由。同时，网络层也必须提供第二层地址到第三层地址的解析以及反向解析。网络层必须支持路由和路由管理功能。这些功能由外部对等协议提供,这些外部对等协议被称为路由协议。路由协议包括内部网关协议(IGP)和外部网关协议(EGP)。</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li>网络接入层</li>
+</ol>
+<ul>
+<li><ol type="1">
+<li>数据链路层--OSI/RM</li>
+</ol>
+<ul>
+<li>允许上层使用成帧之类的各种技术访问介质。</li>
+<li>使用介质访问控制和错误检测等技术将数据放置到介质上，以及从介质接收数据。</li>
+</ul></li>
+<li><ol start="2" type="1">
+<li>物理层--OSI/RM</li>
+</ol>
+<ul>
+<li>通过网络介质传输构成数据链路层顿的比特。</li>
+<li>物理层的用途是创建电信号、光信号或微波信号，以表示每个中的比特。</li>
+<li>基本功能：物理组件；数据编码；信号。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h5 id="tcpip模型的封装与解封装">3.3 TCP/IP模型的封装与解封装</h5>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/1.1/20230602144206.png"><br>
+
+<center>
+图六：TCP/IP模型的封装与解封装
+</center>
+<h4 id="osi参考模型与tcpip模型对比">3 OSI参考模型与TCP/IP模型对比</h4>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/1.1/20230602142518.png"><br>
+
+<center>
+图七：OSI参考模型与TCP/IP模型对比
+</center>
+<p>参考：<br>
+[1] wuhongbin!!!《OSI
+七层参考模型与数据封装解封装过程》https://blog.csdn.net/whb1751178448/article/details/109273155<br>
+“</p>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div class="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Kikudzukiの未来
+            <span class="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;Kikudzuki
+        </div>
+        <div>Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp; <a target="_blank" rel="noopener" href="https://github.com/argvchs/hexo-theme-particlex">ParticleX Theme</a></div>
+        
+    </div>
+</footer>
+
+            </div>
+            </transition>
+            <div id="showimg">
+                <img id="showimg-content">
+            </div>
+        </div>
+        <script src="/js/functions.js"></script>
+<script src="/js/particlex.js"></script>
+
+
+
+
+
+
+
+    </body>
+</html>
