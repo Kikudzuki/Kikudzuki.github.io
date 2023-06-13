@@ -3,7 +3,7 @@
 <html lang="zh-cn">
     <head>
         <meta charset="UTF-8">
-        <title>IEEE802.1Q协议 | Kikudzukiの未来</title>
+        <title>常用配置命令 | Kikudzukiの未来</title>
         <meta name="author" content="Kikudzuki">
         <meta name="description" content="学习之路">
         <meta name="keywords" content="">
@@ -244,14 +244,14 @@ mjx-container[display="true"] + br {
 
                 <div class="article">
     <div>
-        <h1>IEEE802.1Q协议 </h1>
+        <h1>常用配置命令 </h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/6/8
+            2023/6/13
         </span>
         
         <span class="category">
@@ -271,7 +271,7 @@ mjx-container[display="true"] + br {
             
             <span class="tag">
                 
-                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #ffa2c4">路由与交换技术</a>
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #ff7d73">路由与交换技术</a>
             </span>
             
         </span>
@@ -279,42 +279,211 @@ mjx-container[display="true"] + br {
     </div>
     
     <div class="content" v-pre>
-        <p><b>本节内容学习：</b></p>
+        <p><b>常用配置命令</b></p>
 <ol type="1">
-<li>vlan接口类型</li>
-<li>vlan帧格式<br>
+<li>通过三层交换机实现不同VLAN间的通信：</li>
+<li>配置静态路由</li>
+<li>生成树协议</li>
+<li>单臂路由</li>
+<li>RIP动态路由协议配置</li>
+<li>单区域OSPF动态路由协议配置</li>
+<li>PPP协议及验证 多区域OSPF动态协议配置</li>
+<li>ACL配置</li>
+<li>NAT的基本配置</li>
+<li>VPN的配置</li>
+<li>多区域进行连通性测试<br>
 <span id="more"></span></li>
 </ol>
-<h4 id="vlan接口类型">1. vlan接口类型</h4>
-<ol type="1">
-<li>access模式
-<ul>
-<li>access端口只能属于一个vlan，发送的数据中不带有vlan标签，一般用于计算机端口连接。</li>
-</ul></li>
-<li>trunk模式
-<ul>
-<li>trunk端口可以通过多个vlan，发送的数据中带有vlan标签，一般用于交换机与交换机之间的连接。</li>
-</ul></li>
-</ol>
-<h4 id="vlan帧格式">2. vlan帧格式</h4>
-<ol type="1">
-<li>标记协议标识(TPID)：
-<ul>
-<li>固定值0x8100，表示该帧载有802.1Q标记信息</li>
-</ul></li>
-<li>标记控制信息(TCI)：
-<ul>
-<li>Priority:3比特，表示优先级</li>
-<li>CFI(Canonical format indicator) :
-1比特，表示总线型以太网、FDDI、令牌环网</li>
-<li>VLANID: 12比特，表示VID，范围1- 4094</li>
-<li>802.1Q协议对发往Trunk的以太网数据帧打标记，在以太网的数据帧加4个字节的内容:
-TPID、优先级、CFI、VLANID,TPID为VLAN封装的协议:
-0x8100代表802.1Q协议。</li>
-<li>Trunk上默认会转发交换机上存在的所有VLAN的数据。</li>
-<li>交换机在从Trunk口转发数据前会在数据打上个Tag标签，在到达另一交换机后，再剥去此标签。</li>
-</ul></li>
-</ol>
+<h4 id="通过三层交换机实现不同vlan间的通信">1.
+通过三层交换机实现不同VLAN间的通信：</h4>
+<pre class="二层交换机命令配置："><code>enable
+config terminal
+vlan 10
+vlan 20
+exit
+hostname SW-1
+int f0/1
+switchport access vlan 10
+exit
+int f0/11
+switchport access vlan 20
+#exit
+int f0/24
+switchport mode trunk</code></pre>
+<pre class="三层交换机的命令配置："><code>enable
+configure terminal
+vlan 10
+vlan 20
+exit
+int f0/1
+switchport trunk encapsulation dot1q 
+exit
+int vlan 10
+ip address 10.40.10.254 255.255.255.0
+exit
+int vlan 20
+ip address 10.40.20.254 255.255.255.0
+exit
+ip routing</code></pre>
+<h4 id="配置静态路由">2. 配置静态路由</h4>
+<pre><code>ip route 192.168.50.0 255.255.255.0 192.168.30.2
+                        目的地址   默认网关     下一跳</code></pre>
+<h4 id="生成树协议">3. 生成树协议</h4>
+<pre class="交换机s1的命令配置："><code>conf t
+interface range f0/23-24
+switchport mode trunk
+exit
+vlan 10
+exit
+vlan 20
+exit
+int f0/1
+switchport access vlan 10
+end</code></pre>
+<pre class="交换机s2的命令配置："><code>conf t
+interface range f0/23-24
+switchport mode trunk
+exit
+int f0/1
+exit
+vlan 10
+vlan 20
+exit
+int f0/1
+switchport access vlan 10
+exit</code></pre>
+<pre class="交换机s3的命令配置："><code>conf t 
+interface range f0/23-24
+switchport mode trunk
+exit
+vlan 10
+exit
+vlan 20
+exit
+int f0/1
+switchport access vlan 10
+exit</code></pre>
+<h4 id="单臂路由">4. 单臂路由</h4>
+<pre class="交换机："><code>en
+conf t
+vlan 10
+vlan 20
+exit
+int f0/23
+switchport access vlan 10
+exit
+int f0/24
+switchport access vlan 20
+exit
+int f0/1
+switchport mode trunk 
+exit</code></pre>
+<pre class="路由器："><code>conf t
+int f0/0
+no shutdown 
+int f0/0.1
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0
+exit
+int f0/0.2
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.0
+exit</code></pre>
+<h4 id="rip动态路由协议配置">5.RIP动态路由协议配置</h4>
+<pre><code>router rip 
+network 192.168.50.0
+network 192.168.60.0
+network 192.168.70.0
+version 2   (设置RIPv2)
+Router rip  
+no auto-summary  （关闭RIP动态路由协议自动聚合功能）
+exit
+router rip 
+redistribute static （路由重分发）</code></pre>
+<h4 id="单区域ospf动态路由协议配置">6. 单区域OSPF动态路由协议配置</h4>
+<pre><code>（创建路由器环回接口）
+int loopback 1
+ip address 1.1.1.1 255.255.255.0
+exit
+router ospf 1
+network 10.1.1.0 0.0.0.255 area 0
+show ip ospf database   （查看OSPF数据库）
+show ip ospf neighbor    （显示与OSPF相关的邻居信息）
+show ip ospf   
+debug ip ospf events    （检测OSPF事件）
+debug ip ospf packet    （检测OSPF包的传输）</code></pre>
+<h4 id="ppp协议及验证-多区域ospf动态协议配置">7. PPP协议及验证
+多区域OSPF动态协议配置</h4>
+<pre class="配置pap认证-主验证端："><code>username cisco password 123
+int s0/0
+encapsulation ppp
+ppp authentication pap
+exit</code></pre>
+<pre class="配置pap认证-被验证端："><code>int s0/0
+encapsulation  ppp
+ppp pap sent-username cisco password 123
+end</code></pre>
+<pre class="配置chap双向认证："><code>conf t
+Username router password 123
+int s0/1
+encapsulation ppp
+ppp authentication chap
+(config-if)#</code></pre>
+<pre class="配置chap双向认证：（对端配置）"><code>username  router password 123
+int s0/1
+encapsulation ppp
+ppp authentication chap
+启动路由器 3的远程管理功能（telnet服务），配置访问用户名为user，访问密码为password。
+clock rate 64000
+line vty 0 4
+login local
+int s1/1
+ppp authentication chap
+exit</code></pre>
+<h4 id="acl配置">8. ACL配置</h4>
+<pre><code>router ospf 1
+network 172.25.50.0 0.0.0.255 area 0
+redistribute static subnets（重分发静态路由）   
+redistribute connected subnets（重分发直连路由）
+access-list 20 deny 10.40.20.0 0.0.0.255
+access-list 20 permit any
+int f1/0
+ip access-group 20 out</code></pre>
+<h4 id="nat的基本配置">9. NAT的基本配置</h4>
+<pre><code>int f1/1
+ip access-group 10 in
+ip nat inside source list 10 int f1/0 overload 
+int f1/1
+ip nat inside
+exit
+int f0/0
+ip nat inside 
+exit
+int f1/0
+ip nat inside 
+exit</code></pre>
+<h4 id="vpn的配置">10. VPN的配置</h4>
+<pre><code>interface tunnel 0
+ip address 192.168.10.2 255.255.255.0
+tunnel source fastEthernet 0/0
+                             源地址
+tunnel destination 20.4.50.1
+                             目标地址
+exit
+ip route 10.4.0.0 255.255.0.0 192.168.10.1</code></pre>
+<pre><code>interface tunnel 0
+ip address 192.168.10.1 255.255.255.0
+tunnel source fastEthernet 0/0
+tunnel destination 20.4.70.2
+exit
+ip route 172.16.0.0 255.255.0.0 192.168.10.2</code></pre>
+<h4 id="多区域进行连通性测试">11. 多区域进行连通性测试</h4>
+<pre><code>enable
+configure terminal
+router ospf 100
+area 1 virtual-link 192.168.70.1  （area 0 跨 area1 与 area 2 进行联通）
+被跨区域                           对端地址
+area 1 virtual-link 192.168.50.1  （area 2 跨 area1 与 area 1 进行联通）</code></pre>
 
     </div>
     
