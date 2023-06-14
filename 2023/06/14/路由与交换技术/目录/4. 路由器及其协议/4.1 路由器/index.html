@@ -3,7 +3,7 @@
 <html lang="zh-cn">
     <head>
         <meta charset="UTF-8">
-        <title>阶段综合实验 | Kikudzukiの未来</title>
+        <title>路由器 | Kikudzukiの未来</title>
         <meta name="author" content="Kikudzuki">
         <meta name="description" content="学习之路">
         <meta name="keywords" content="">
@@ -244,14 +244,14 @@ mjx-container[display="true"] + br {
 
                 <div class="article">
     <div>
-        <h1>阶段综合实验 </h1>
+        <h1>路由器 </h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/5/31
+            2023/6/14
         </span>
         
         <span class="category">
@@ -271,7 +271,7 @@ mjx-container[display="true"] + br {
             
             <span class="tag">
                 
-                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF%E5%AE%9E%E9%AA%8C/" style="color: #ff7d73">路由与交换技术实验</a>
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #03a9f4">路由与交换技术</a>
             </span>
             
         </span>
@@ -279,171 +279,32 @@ mjx-container[display="true"] + br {
     </div>
     
     <div class="content" v-pre>
-        <p><b>实验目的：</b></p>
-<ol type="1">
-<li>掌握三层交换机的VLAN、VLAN接口配置方法；</li>
-<li>掌握基本访问控制列表的配置方法；</li>
-<li>掌握动态NAT的配置方法；</li>
-<li>掌握NAT的监听方法；</li>
-<li>理解NAT的功能和作用。<br>
-<span id="more"></span></li>
-</ol>
-<p><b>实验拓扑结构：</b></p>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/1.png"><br>
-
-<center>
-图一：拓扑结构
-</center>
-<p><b>实验过程：</b></p>
-<pre class="pc0:"><code>Ip:10.4.10.100/24
-网关:10.4.10.254</code></pre>
-<pre class="pc1:"><code>Ip:10.4.20.100/24
-网关:10.4.20.254</code></pre>
-<pre class="pc2:"><code>Ip:10.4.40.100/24
-网关:10.4.40.254</code></pre>
-<pre class="pc3:"><code>Ip:20.4.60.100/24
-网关:20.4.60.254</code></pre>
-<pre class="pc4:"><code>Ip:20.4.80.100/24
-网关:20.4.80.254</code></pre>
-<pre class="server0:"><code>Ip:20.4.90.100/24
-网关:20.4.90.254</code></pre>
-<pre class="switch0:"><code>Switch&gt;enable
-Switch#configure terminal
-Switch(config)#vlan 10
-Switch(vlan-config)#vlan 20
-Switch(vlan-config)#exit
-Switch(config)#int f0/1
-Switch(config-if)#switchport access vlan 10
-Switch(config-if)#exit
-Switch(config)#int f0/11
-Switch(config-if)#switchport access vlan 20
-Switch(config-if)#exit
-Switch(config)#int f0/24
-Switch(config-if)#switchport mode trunk
-Switch(config-if)#end
-Switch#</code></pre>
-<pre class="multilayer_switch0:"><code>Switch&gt;enable
-Switch#configure terminal
-Switch(config)#vlan 10
-Switch(vlan-config)#vlan 20
-Switch(vlan-config)#exit
-Switch(config)#int f0/2
-Switch(config-if)#switchport mode trunk
-Switch(config-if)#exit
-Switch(config)#int vlan 10
-Switch(config-if)#ip address 10.4.10.254 255.255.255.0
-Switch(config-if)#exit
-Switch(config)#int vlan 20
-Switch(config-if)#ip address 10.4.20.254 255.255.255.0
-Switch(config-if)#exit
-Switch(config)#int f0/1
-Switch(config-if)#no switchport
-Switch(config-if)#ip address 10.4.30.1 255.255.255.0
-Switch(config-if)#exit
-Switch(config)#ip routing
-Switch(config)#ip route 0.0.0.0 0.0.0.0 10.4.30.2
-Switch(config)#end
-Switch#</code></pre>
-<pre class="router1:"><code>Router&gt;enable
-Router#configure terminal
-Router(config)#int g0/0
-Router(config-if)#ip address 10.4.30.2 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/1
-Router(config-if)#ip address 10.4.40.254 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/2
-Router(config-if)#ip address 20.4.50.1 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#ip route 10.4.10.0 255.255.255.0 10.4.30.1
-Router(config)#ip route 10.4.20.0 255.255.255.0 10.4.30.1
-Router(config)#router ospf 1000
-Router(config-router)# redistribute static subnets
-Router(config-router)# redistribute connected subnets
-Router(config-router)#network 20.4.50.0 0.0.0.255 area 0
-Router(config-router)#exit
-Router(config)#access-list 10 permit 10.4.10.0 0.0.0.255
-Router(config)#access-list 10 deny 10.4.20.0 0.0.0.255
-Router(config)#access-list 10 permit 10.4.40.0 0.0.0.255
-Router(config)#access-list 10 permit 20.4.50.0 0.0.0.255
-Router(config)#int g0/2
-Router(config-if)#ip access-group 10 out
-Router(config-if)#exit
-Router(config)#ip nat inside source list 10 int g0/2 overload
-Router(config)#int g0/0
-Router(config-if)#ip nat inside
-Router(config)#int g0/1
-Router(config-if)#ip nat inside
-Router(config)#int g0/2
-Router(config-if)#ip nat outside
-Router(config-if)#end
-Router#</code></pre>
-<pre class="router2:"><code>Router&gt;enable
-Router#configure terminal
-Router(config)#int g0/0
-Router(config-if)#ip address 20.4.50.2 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/1
-Router(config-if)#ip address 20.4.60.254 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/2
-Router(config-if)#ip address 20.4.70.1 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#router ospf 1000
-Router(config-router)#network 20.4.50.0 0.0.0.255 area 0
-Router(config-router)#network 20.4.60.0 0.0.0.255 area 0
-Router(config-router)#network 20.4.70.0 0.0.0.255 area 0
-Router(config-router)#end
-Router#</code></pre>
-<pre class="router3:"><code>Router&gt;enable
-Router#configure terminal
-Router(config)#int g0/0
-Router(config-if)#ip address 20.4.70.2 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/1
-Router(config-if)#ip address 20.4.80.254 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/2
-Router(config-if)#ip address 20.4.90.254 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#router ospf 1000
-Router(config-router)#network 20.4.70.0 0.0.0.255 area 0
-Router(config-router)#network 20.4.80.0 0.0.0.255 area 0
-Router(config-router)#network 20.4.90.0 0.0.0.255 area 0
-Router(config-router)#end
-Router#debug ip icmp
-Router#</code></pre>
-<p><b>实验结果测试（截屏）：</b></p>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/2.png"><br>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/3.png"><br>
-
-<center>
-图二：PC0对Router3路由器F2/0接口发出的ICMP报文，查阅原IP地址
-</center>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/4.png"><br>
-
-<center>
-图三：PC0访问网络
-</center>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/5.png"><br>
-
-<center>
-图四：PC1访问网络
-</center>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/6.png"><br>
-
-<center>
-图五：PC2访问网络
-</center>
+        <p><b>本节学习内容：</b><br>
+1. 路由器的工作过程及原理<br>
+2. 路由表<br>
+3. 路由器的功能<br>
+4. 路由器的作用<br>
+<span id="more"></span></p>
+<h4 id="路由器的工作过程及原理">1. 路由器的工作过程及原理</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>路由器工作在OSI/RM的第一、第二、第三层<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>路由器的主要工作就算为经过路由器的每个数据帧寻找一条最佳路径，并将数据有效的传送到目的站点。</p>
+<h4 id="路由表">2. 路由表</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>静态路由表<br>
+- 默认路由(缺省路由)：0.0.0.0 0.0.0.0 [对端ip地址]<br>
+动态路由表</p>
+<h4 id="路由器的功能">3. 路由器的功能</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>路由器的最主要的功能是路径选择。<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>路由器通过支持网络层寻址的网络协议及其结构，来完成路径选择问题，其工作就算保证把一个进行网络寻址的报文传送到正确的目的网络中。<br>
+路由协议<br>
+- 目的：保证路由器之间的网络互相连接。<br>
+<span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>简略表述路由器的功能<br>
+1. 连接<br>
+2. 管理<br>
+3. 路由算法<br>
+4. 传输控制<br>
+- 数据过滤、压缩、加密，传输流量控制</p>
+<h4 id="路由器的作用">4. 路由器的作用</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>路由器主要是用来连接多个网络，并将数据包转发到自身网络或其他网络。</p>
 
     </div>
     
