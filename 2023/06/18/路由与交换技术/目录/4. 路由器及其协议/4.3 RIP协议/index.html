@@ -3,7 +3,7 @@
 <html lang="zh-cn">
     <head>
         <meta charset="UTF-8">
-        <title>IEEE802.1Q协议 | Kikudzukiの未来</title>
+        <title>RIP协议 | Kikudzukiの未来</title>
         <meta name="author" content="Kikudzuki">
         <meta name="description" content="学习之路">
         <meta name="keywords" content="">
@@ -244,14 +244,14 @@ mjx-container[display="true"] + br {
 
                 <div class="article">
     <div>
-        <h1>IEEE802.1Q协议 </h1>
+        <h1>RIP协议 </h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/6/8
+            2023/6/18
         </span>
         
         <span class="category">
@@ -271,7 +271,7 @@ mjx-container[display="true"] + br {
             
             <span class="tag">
                 
-                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #ffa2c4">路由与交换技术</a>
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #00bcd4">路由与交换技术</a>
             </span>
             
         </span>
@@ -279,41 +279,61 @@ mjx-container[display="true"] + br {
     </div>
     
     <div class="content" v-pre>
-        <p><b>本节内容学习：</b></p>
+        <p><b>本节学习内容：</b></p>
 <ol type="1">
-<li>vlan接口类型</li>
-<li>vlan帧格式<br>
-<span id="more"></span></li>
+<li>RIPv1</li>
+<li>RIPv2</li>
+<li>工作原理</li>
+<li>RIP协议的缺点</li>
 </ol>
-<h4 id="vlan接口类型">1. vlan接口类型</h4>
+<span id="more"></span>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>路由信息协议RIP(Routing
+Information
+Protocol),简称RIP协议，它是基于距离矢量算法的路由协议，其利用跳数作为度量来衡量到达目的网络的距离。RIPv1、
+RIPv2和RIPng，前两者用于IPv4， RIPng用于IPv6。</p>
+<h4 id="ripv1">1. RIPv1</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>RIPv1为有类别路由协议，不支持VLSM和CIDR；以广播的形式发送报文；不支持认证。</p>
+<h4 id="ripv2">2. RIPv2</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>RIPv2为无类别路由协议，支持VLSM，支持路由聚合与CIDR；支持以广播或组播（224.0.0.9）方式发送报文；支持明文认证和MD5密文认证。</p>
+<h4 id="工作原理">3. 工作原理</h4>
 <ol type="1">
-<li>access模式
+<li>路由建立
 <ul>
-<li>access端口只能属于一个vlan，发送的数据中不带有vlan标签，一般用于计算机端口连接。</li>
+<li>启用RIP协议的路由器会向其他相邻路由器发送信息请求，接收到请求的路由器，会把自己的路由表信息返回给请求路由器
+<ul>
+<li>在原有的路由表信息上
+<ul>
+<li>到达目的网络，相同下一跳，最新消息，更新</li>
+<li>发现了新的网络，添加</li>
+<li>到达目的网络，不同下一跳，新路由优势（距离小），更新；如果新路由劣势（距离大），则不更新</li>
+<li>到达目的网络，不同下一跳且距离值相同，等价负载均衡</li>
 </ul></li>
-<li>trunk模式
+</ul></li>
+</ul></li>
+<li>距离矢量的计算
 <ul>
-<li>trunk端口可以通过多个vlan，发送的数据中带有vlan标签，一般用于交换机与交换机之间的连接。</li>
+<li>路由器到直连网络的距离定义为1；</li>
+<li>路由器到非直连网络的距离定义为所经过的路由器的数量加1；</li>
+<li>最多能跨越15个路由器和目的网络通信，距离为16时，目的网络为不可达。</li>
+</ul></li>
+<li>定时器
+<ul>
+<li>每隔30秒，路由器会和相邻路由器交换路由表的信息。</li>
+</ul></li>
+<li>环路
+<ul>
+<li>当网络发生故障时，RIP网络有可能产生路由环路。可以通过水平分割、毒性反转、触发更新、抑制时间等技术来避免环路的产生。
+<ul>
+<li>触发更新：当路由表发生变化时，就立即发送更新报文，而不是周期性发送</li>
+<li>水平分割：让路由器记录收到某特定路由信息的报文，而不让同一路由信息再通过此接口反方向发送路由信息的报文</li>
+</ul></li>
 </ul></li>
 </ol>
-<h4 id="vlan帧格式">2. vlan帧格式</h4>
+<h4 id="rip协议的缺点">4. RIP协议的缺点</h4>
 <ol type="1">
-<li>标记协议标识(TPID)：
-<ul>
-<li>固定值0x8100，表示该帧载有802.1Q标记信息</li>
-</ul></li>
-<li>标记控制信息(TCI)：
-<ul>
-<li>Priority:3比特，表示优先级</li>
-<li>CFI(Canonical format indicator) :
-1比特，表示总线型以太网、FDDI、令牌环网</li>
-<li>VLANID: 12比特，表示VID，范围1- 4094</li>
-<li>802.1Q协议对发往Trunk的以太网数据帧打标记，在以太网的数据帧加4个字节的内容:
-TPID、优先级、CFI、VLANID,TPID为VLAN封装的协议:
-0x8100代表802.1Q协议。</li>
-<li>Trunk上默认会转发交换机上存在的所有VLAN的数据。</li>
-<li>交换机在从Trunk口转发数据前会在数据打上个Tag标签，在到达另一交换机后，再剥去此标签。</li>
-</ul></li>
+<li>由于15跳为最大值，RIP只能应用于小规模网络；</li>
+<li>收敛速度慢；</li>
+<li>根据跳数选择的路由，不一定是最优路由。</li>
 </ol>
 
     </div>
