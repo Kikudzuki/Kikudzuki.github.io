@@ -3,7 +3,7 @@
 <html lang="zh-cn">
     <head>
         <meta charset="UTF-8">
-        <title>阶段综合实验 | Kikudzukiの未来</title>
+        <title>OSPF | Kikudzukiの未来</title>
         <meta name="author" content="Kikudzuki">
         <meta name="description" content="学习之路">
         <meta name="keywords" content="">
@@ -244,14 +244,14 @@ mjx-container[display="true"] + br {
 
                 <div class="article">
     <div>
-        <h1>阶段综合实验 </h1>
+        <h1>OSPF </h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/5/31
+            2023/6/19
         </span>
         
         <span class="category">
@@ -271,7 +271,7 @@ mjx-container[display="true"] + br {
             
             <span class="tag">
                 
-                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF%E5%AE%9E%E9%AA%8C/" style="color: #ff7d73">路由与交换技术实验</a>
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #ffa2c4">路由与交换技术</a>
             </span>
             
         </span>
@@ -279,171 +279,163 @@ mjx-container[display="true"] + br {
     </div>
     
     <div class="content" v-pre>
-        <p><b>实验目的：</b></p>
+        <p><b>本节学习内容：</b></p>
 <ol type="1">
-<li>掌握三层交换机的VLAN、VLAN接口配置方法；</li>
-<li>掌握基本访问控制列表的配置方法；</li>
-<li>掌握动态NAT的配置方法；</li>
-<li>掌握NAT的监听方法；</li>
-<li>理解NAT的功能和作用。<br>
-<span id="more"></span></li>
+<li>OSPF简述</li>
+<li>OSPF优点</li>
+<li>Router-ID</li>
+<li>工作原理</li>
+<li>工作过程</li>
+<li>常用命令的检测和管理命令</li>
+<li>实验</li>
 </ol>
-<p><b>实验拓扑结构：</b></p>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/1.png"><br>
+<span id="more"></span>
+<h4 id="ospf简述">1. OSPF简述</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>OSPF（Open Shortest Path
+First，开放最短路径优先）是IETF
+开发的基于链路状态的自治系统内部路由协议，仅传播对端设备不具备的路由信息，网络收敛迅速，有效避免了网络资源浪费。OSPF直接工作于IP层之上，IP协议号为89，并且以组播地址发送协议包。</p>
+<h4 id="ospf优点">2. OSPF优点</h4>
+<ol type="1">
+<li>开销减少
+<ul>
+<li>OSPF使用组播发送路由信息，并且只在拓扑结构发生变化时发送路由表变化的更新信息。</li>
+</ul></li>
+<li>支持VLSM和CIDR
+<ul>
+<li>OSPF路由更新中包含子网掩码。</li>
+</ul></li>
+<li>支持不连续网络</li>
+<li>支持手动路由汇总</li>
+<li>收敛时间短</li>
+<li>无环拓扑产生</li>
+</ol>
+<h4 id="router-id">3. Router-ID</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>RID默认为路由器最大的IP地址号，也可以手动设置为任意一个32bit的无符号整数，是一台路由器的唯一标识，在整个自治系统内唯一。</p>
+<h4 id="工作原理">4. 工作原理</h4>
+<ol type="1">
+<li>OSPF协议的度量值</li>
+</ol>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>OSPF协议使用最短路径优先算法（SPF）来计算生成路由表，其参考值为链路成本（Cost）。链路成本的定义是基于链路带宽的，带宽越高则链路成本越低，带宽越低则链路成本越高。</p>
+<ol start="2" type="1">
+<li>OSPF区域
+<ul>
+<li>骨干区域：区域0为骨干网，其他网络要与骨干网紧密相连。</li>
+<li>非骨干区域：即非区域0。非骨干区域的必须要与骨干区域相连接，物理位置上不连接需要用虚连接（Virtual-link）连接到骨干区域。</li>
+<li>OSPF区域外的路由器无法看到区域内的网络拓扑情况，这样不仅降低了网络流量，而且把SPF算法限制在一个比较小的范围中。而且一个区域的拓扑结构变化，也不会导致全网的OSPF重新计算路由。</li>
+</ul></li>
+<li>标准OSPF区域
+<ul>
+<li>特点<br>
+区域内包含一组连续的节点和网络<br>
+每个区域内路由器都有该区域的拓扑结构数据库，并运行着同一个SPF算法<br>
+每个区域都与骨干区域紧密相连<br>
+可以使用虚连接连接物理位置上与骨干区域不能直接相连的区域</li>
+<li>设计规则<br>
+骨干区域必须最先存在<br>
+每个区域与骨干区域紧密相连<br>
+骨干区域必须是连续的<br>
+非骨干区域可以使用虚连接和骨干网相连（临时手段）</li>
+</ul></li>
+<li>OSPF区域类型
+<ul>
+<li>骨干区域（区域0）
+<ul>
+<li>骨干区域是OSPF自治系统的核心，负责互连多个非骨干OSPF区域。OSPF骨干区域具有标准区域的所有属性，可以在物理位置上不连续，但在逻辑上必须连接（可以使用虚连接实现）。</li>
+</ul></li>
+<li>末节区域（Stub区域）</li>
+<li>完全末节区域（Totally Stub区域）</li>
+<li>次末节区域（NSSA区域）</li>
+</ul></li>
+<li>OSPF路由器类型
+<ul>
+<li>区域内部路由器(IR)</li>
+<li>区域边界路由器(ABR)</li>
+<li>自治系统边界路由器(ASBR)</li>
+<li>骨干路由器(BR)</li>
+</ul></li>
+</ol>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E8%B7%AF%E7%94%B1%E5%99%A8%E5%8F%8A%E5%85%B6%E5%8D%8F%E8%AE%AE/4.4/20230619095106.png"><br>
 
 <center>
-图一：拓扑结构
+图一：OSPF路由器类型
 </center>
-<p><b>实验过程：</b></p>
-<pre class="pc0:"><code>Ip:10.4.10.100/24
-网关:10.4.10.254</code></pre>
-<pre class="pc1:"><code>Ip:10.4.20.100/24
-网关:10.4.20.254</code></pre>
-<pre class="pc2:"><code>Ip:10.4.40.100/24
-网关:10.4.40.254</code></pre>
-<pre class="pc3:"><code>Ip:20.4.60.100/24
-网关:20.4.60.254</code></pre>
-<pre class="pc4:"><code>Ip:20.4.80.100/24
-网关:20.4.80.254</code></pre>
-<pre class="server0:"><code>Ip:20.4.90.100/24
-网关:20.4.90.254</code></pre>
-<pre class="switch0:"><code>Switch&gt;enable
-Switch#configure terminal
-Switch(config)#vlan 10
-Switch(vlan-config)#vlan 20
-Switch(vlan-config)#exit
-Switch(config)#int f0/1
-Switch(config-if)#switchport access vlan 10
-Switch(config-if)#exit
-Switch(config)#int f0/11
-Switch(config-if)#switchport access vlan 20
-Switch(config-if)#exit
-Switch(config)#int f0/24
-Switch(config-if)#switchport mode trunk
-Switch(config-if)#end
-Switch#</code></pre>
-<pre class="multilayer_switch0:"><code>Switch&gt;enable
-Switch#configure terminal
-Switch(config)#vlan 10
-Switch(vlan-config)#vlan 20
-Switch(vlan-config)#exit
-Switch(config)#int f0/2
-Switch(config-if)#switchport mode trunk
-Switch(config-if)#exit
-Switch(config)#int vlan 10
-Switch(config-if)#ip address 10.4.10.254 255.255.255.0
-Switch(config-if)#exit
-Switch(config)#int vlan 20
-Switch(config-if)#ip address 10.4.20.254 255.255.255.0
-Switch(config-if)#exit
-Switch(config)#int f0/1
-Switch(config-if)#no switchport
-Switch(config-if)#ip address 10.4.30.1 255.255.255.0
-Switch(config-if)#exit
-Switch(config)#ip routing
-Switch(config)#ip route 0.0.0.0 0.0.0.0 10.4.30.2
-Switch(config)#end
-Switch#</code></pre>
-<pre class="router1:"><code>Router&gt;enable
-Router#configure terminal
-Router(config)#int g0/0
-Router(config-if)#ip address 10.4.30.2 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/1
-Router(config-if)#ip address 10.4.40.254 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/2
-Router(config-if)#ip address 20.4.50.1 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#ip route 10.4.10.0 255.255.255.0 10.4.30.1
-Router(config)#ip route 10.4.20.0 255.255.255.0 10.4.30.1
-Router(config)#router ospf 1000
-Router(config-router)# redistribute static subnets
-Router(config-router)# redistribute connected subnets
-Router(config-router)#network 20.4.50.0 0.0.0.255 area 0
-Router(config-router)#exit
-Router(config)#access-list 10 permit 10.4.10.0 0.0.0.255
-Router(config)#access-list 10 deny 10.4.20.0 0.0.0.255
-Router(config)#access-list 10 permit 10.4.40.0 0.0.0.255
-Router(config)#access-list 10 permit 20.4.50.0 0.0.0.255
-Router(config)#int g0/2
-Router(config-if)#ip access-group 10 out
-Router(config-if)#exit
-Router(config)#ip nat inside source list 10 int g0/2 overload
-Router(config)#int g0/0
-Router(config-if)#ip nat inside
-Router(config)#int g0/1
-Router(config-if)#ip nat inside
-Router(config)#int g0/2
-Router(config-if)#ip nat outside
-Router(config-if)#end
-Router#</code></pre>
-<pre class="router2:"><code>Router&gt;enable
-Router#configure terminal
-Router(config)#int g0/0
-Router(config-if)#ip address 20.4.50.2 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/1
-Router(config-if)#ip address 20.4.60.254 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/2
-Router(config-if)#ip address 20.4.70.1 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#router ospf 1000
-Router(config-router)#network 20.4.50.0 0.0.0.255 area 0
-Router(config-router)#network 20.4.60.0 0.0.0.255 area 0
-Router(config-router)#network 20.4.70.0 0.0.0.255 area 0
-Router(config-router)#end
-Router#</code></pre>
-<pre class="router3:"><code>Router&gt;enable
-Router#configure terminal
-Router(config)#int g0/0
-Router(config-if)#ip address 20.4.70.2 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/1
-Router(config-if)#ip address 20.4.80.254 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#int g0/2
-Router(config-if)#ip address 20.4.90.254 255.255.255.0
-Router(config-if)#no shutdown
-Router(config-if)#exit
-Router(config)#router ospf 1000
-Router(config-router)#network 20.4.70.0 0.0.0.255 area 0
-Router(config-router)#network 20.4.80.0 0.0.0.255 area 0
-Router(config-router)#network 20.4.90.0 0.0.0.255 area 0
-Router(config-router)#end
-Router#debug ip icmp
-Router#</code></pre>
-<p><b>实验结果测试（截屏）：</b></p>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/2.png"><br>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/3.png"><br>
-
+<ol start="4" type="1">
+<li>链路状态通告(LSA)</li>
+</ol>
 <center>
-图二：PC0对Router3路由器F2/0接口发出的ICMP报文，查阅原IP地址
+表一：OSPF各种LSA类型及作用
 </center>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/4.png"><br>
-
+<p><img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E8%B7%AF%E7%94%B1%E5%99%A8%E5%8F%8A%E5%85%B6%E5%8D%8F%E8%AE%AE/4.4/20230619100007.png"></p>
+<ol start="5" type="1">
+<li>五种协议报文
+<ul>
+<li>Hello报文</li>
+<li>DD报文</li>
+<li>LSR报文</li>
+<li>LSU报文</li>
+<li>LSAck报文</li>
+</ul></li>
+</ol>
 <center>
-图三：PC0访问网络
+表二：OSPF的五种协议报文
 </center>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/5.png"><br>
-
-<center>
-图四：PC1访问网络
-</center>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E9%98%B6%E6%AE%B5%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C2/6.png"><br>
-
-<center>
-图五：PC2访问网络
-</center>
+<p><img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E8%B7%AF%E7%94%B1%E5%99%A8%E5%8F%8A%E5%85%B6%E5%8D%8F%E8%AE%AE/4.4/20230619100044.png"></p>
+<h4 id="工作过程">5. 工作过程</h4>
+<ol type="1">
+<li>寻找邻居</li>
+<li>建立邻接关系</li>
+<li>链路状态信息传递</li>
+<li>计算路由</li>
+</ol>
+<p>具体过程前往B站学习<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1hS4y1c7XL">OSPF工作原理</a></p>
+<h4 id="常用命令的检测和管理命令">6. 常用命令的检测和管理命令</h4>
+<table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">命令</th>
+<th style="text-align: left;">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">show ip ospf</td>
+<td style="text-align: left;">显示OSPF进程和一些细节，如进程ID和路由器ID</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">show ip ospf database</td>
+<td style="text-align: left;">显示路由器的拓扑数据库</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">show ip ospf neighbor</td>
+<td style="text-align: left;">显示OSPF邻居</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">show ip ospf neighbor detail</td>
+<td style="text-align: left;">显示OSPF邻居的细节信息，提供一些参数如邻居地址、Hello间隔、Dead间隔</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">show ip ospf interface</td>
+<td style="text-align: left;">对一个给定的接口，显示OSPF的配置信息</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ip ospf priority</td>
+<td style="text-align: left;">接口命令，用于改变DR/BDR的选择过程</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ip ospf cost</td>
+<td style="text-align: left;">接口命令，用于改变一个OSPF接口的成本</td>
+</tr>
+</tbody>
+</table>
+<h4 id="实验">7. 实验</h4>
+<p><a href="https://kikudzuki.github.io/2023/05/31/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/8%20%E5%8D%95%E5%8C%BA%E5%9F%9FOSPF%E9%85%8D%E7%BD%AE/">1.
+单区域OSPF配置</a><br>
+<a href="https://kikudzuki.github.io/2023/05/31/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%AE%9E%E9%AA%8C/9%20PPP%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%AA%8C%E8%AF%81%E3%80%81%E5%A4%9A%E5%8C%BA%E5%9F%9FOSPF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE/">2.
+PPP协议及验证、多区域OSPF路由配置</a></p>
 
     </div>
     
