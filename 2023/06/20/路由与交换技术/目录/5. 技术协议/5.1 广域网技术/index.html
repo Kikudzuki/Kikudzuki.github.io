@@ -3,7 +3,7 @@
 <html lang="zh-cn">
     <head>
         <meta charset="UTF-8">
-        <title>单臂路由 | Kikudzukiの未来</title>
+        <title>广域网技术 | Kikudzukiの未来</title>
         <meta name="author" content="Kikudzuki">
         <meta name="description" content="学习之路">
         <meta name="keywords" content="">
@@ -244,14 +244,14 @@ mjx-container[display="true"] + br {
 
                 <div class="article">
     <div>
-        <h1>单臂路由 </h1>
+        <h1>广域网技术 </h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/5/30
+            2023/6/20
         </span>
         
         <span class="category">
@@ -271,7 +271,7 @@ mjx-container[display="true"] + br {
             
             <span class="tag">
                 
-                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF%E5%AE%9E%E9%AA%8C/" style="color: #ff7d73">路由与交换技术实验</a>
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #03a9f4">路由与交换技术</a>
             </span>
             
         </span>
@@ -279,61 +279,158 @@ mjx-container[display="true"] + br {
     </div>
     
     <div class="content" v-pre>
-        <p><b>实验目的：</b></p>
+        <p><b>本节学习内容：</b></p>
 <ol type="1">
-<li>掌握基于路由器进行VLAN间路由的配置方法；</li>
-<li>使用路由器分别完成VLAN间的路由功能，使各VLAN间能够互通。<br>
-<span id="more"></span></li>
+<li>广域网技术</li>
+<li>HDLC</li>
+<li>PPP</li>
+<li>认证</li>
 </ol>
-<p><b>实验拓扑结构：</b></p>
-<p><img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/%E5%9B%BE%E4%B8%80.png"><br>
-图一：单臂路由实验拓扑结构</p>
-<p><b>实验过程：</b></p>
-<pre class="pc0:"><code>IP 192.168.10.100
-掩码 255.255.255.0
-网关 192.168.10.254</code></pre>
-<pre class="pc1:"><code>IP 192.168.20.100
-掩码 255.255.255.0
-网关 192.168.20.254</code></pre>
-<pre class="switch0:"><code>Switch&gt;enable
-Switch#configure terminal
-Switch(config)#vlan 10
-Switch(config-vlan)#vlan 20
-Switch(config-vlan)#exit
-Switch(config)#interface f0/1
-Switch(config-if)#switchport access vlan 10
-Switch(config-if)#interface f0/12
-Switch(config-if)#switchport access vlan 20
-Switch(config-if)#interface f0/24
-Switch(config-if)#switchport mode trunk
-Switch(config-if)#end
-Switch#</code></pre>
-<pre class="router0:"><code>Router&gt;enable
-Router#configure terminal
-Router(config)#interface g0/0.1
-Router(config-subif)#encapsulation dot1q 10
-Router(config-subif)#ip address 192.168.10.254 255.255.255.0
-Router(config-subif)#interface g0/0.2
-Router(config-subif)#encapsulation dot1q 20
-Router(config-subif)#ip address 192.168.20.254 255.255.255.0
-Router(config-subif)#end
-Router#</code></pre>
-<p><b>实验结果测试（截屏）：</b></p>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/%E5%9B%BE%E4%BA%8C.png"><br>
+<span id="more"></span>
+<h4 id="广域网技术">1. 广域网技术</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>广域网（Wide Area
+Network，WAN），覆盖较大地理范围的数据通信网络（10千米以上），使用电信运营商提供的设备作为信息传输平台。广域网必须按照一定的网络体系结构和相应的协议进行组织，以实现不同系统的互联和相互协同工作。</p>
+<ol type="1">
+<li>广域网的的作用：</li>
+</ol>
+<ul>
+<li><ol type="1">
+<li>基于电信运营商的通信网络设施建立远程连接。</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>在相距遥远的局域网之间建立连接性。</li>
+</ol></li>
+</ul>
+<ol start="2" type="1">
+<li>广域网技术的特点：</li>
+</ol>
+<ul>
+<li><ol type="1">
+<li>点对点链路</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>电路交换技术</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>包交换技术</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li>虚电路技术</li>
+</ol></li>
+</ul>
+<ol start="3" type="1">
+<li>WAN封装协议</li>
+</ol>
+<ul>
+<li>HDLC：当链路两端均为Cisco设备时，点对点连接、专用链路和交换电路连接上的默认封装类型。HDLC现在是同步PPP的基础。</li>
+<li>PPP：通过同步电路和异步电路提供路由器到路由器和主机到网络的连接。PPP可以和多种网络层协议协同工作。</li>
+</ul>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E6%8A%80%E6%9C%AF%E5%8D%8F%E8%AE%AE/5.1/20230620102008.png"><br>
 
 <center>
-图二：PC0 PING 路由器 Router G0/0.1接口IP地址截图
+图一：广域网与OSI参考模型
 </center>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/%E5%9B%BE%E4%B8%89.png"><br>
+<h4 id="hdlc">2. HDLC</h4>
+<ol type="1">
+<li>HDLC封装
+<ul>
+<li>HDLC是由国际标准化组织（ISO）开发的、面向比特的同步数据链路层协议。定义的帧结构采用确认机制进行流量控制和错误控制。</li>
+</ul></li>
+<li>HDLC帧结构
+<ul>
+<li>F（flag） ：固定格式— 01111110 ； 作用： 帧同步</li>
+<li>A（address） ：地址：地址字段 A 是 8
+bit。最多可以表示256个站的地址。全“1”为广播地址，全“0”为测试用，用于测试数据链路的状态。因此有效地址共有254。</li>
+<li>C（control） ：帧的类型、帧的编号、命令与控制信息</li>
+<li>I（information） ：信息字段</li>
+<li>CRC（checksum） ：校验A、C、I字段的数据 G(X)=
+X<sup>16+X</sup>12+X^5+1，帧检验序列FCS 字段共 16
+bit。所检验的范围是从地址字段的第一个比特起，到信息字段的最末一个比特为止。</li>
+</ul></li>
+<li>HDLC帧结构——控制字段
+<ul>
+<li>HDLC帧分为三种：即信息帧I、监控帧S和无编号帧U。
+<ul>
+<li>信息帧I：用于传送网络层IP分组</li>
+<li>监控帧S：用于协调发送端与接收端的信息帧传输、确认、流量控制</li>
+<li>无编号帧U：用于实现设置数据链路配置方式与数据传输方式等链路控制功能</li>
+</ul></li>
+</ul></li>
+</ol>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E6%8A%80%E6%9C%AF%E5%8D%8F%E8%AE%AE/5.1/20230620103757.png"><br>
 
 <center>
-图三：PC1 PING 路由器 Router G0/0.2接口IP地址截图
+图二：监控帧
 </center>
-<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/%E5%9B%BE%E5%9B%9B.png"><br>
+<h4 id="ppp">3. PPP</h4>
+<ol type="1">
+<li>PPP的工作过程
+<ul>
+<li>在点对点链路的配置、维护和终止过程中，PPP需经历以下几个阶段：
+<ul>
+<li>链路不可用阶段</li>
+<li>链路建立阶段</li>
+<li>验证阶段</li>
+<li>网络层协议阶段</li>
+<li>网络终止阶段</li>
+</ul></li>
+</ul></li>
+</ol>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E6%8A%80%E6%9C%AF%E5%8D%8F%E8%AE%AE/5.1/20230620104408.png"><br>
 
 <center>
-图四：PC1 PING PC2截图
+图五：PPP的工作过程
 </center>
+<ol start="2" type="1">
+<li>PPP的数据帧格式</li>
+</ol>
+<img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/%E6%8A%80%E6%9C%AF%E5%8D%8F%E8%AE%AE/5.1/20230620104742.png"><br>
+
+<center>
+图六：PPP的数据帧格式
+</center>
+<ul>
+<li><ol type="1">
+<li>Flag:标志字段,表示的起始或结束。所有的 PPP 都是由一个标准的
+HDLC标志二进制字节(01111110)作为开始的。如果它正好出现在Information字段中,则需要进行字节填充。</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>Address:地址字段,它被设置成二进制值
+11111111,以表示所有的站都可以接收该帧。它是一个标准的广播地址(注意:PPP通信不分配个人站地址)。</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>Control:控制字段,默认为二进制值 00000011,表示这是一个无序号帧。</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li>Protocol;协议字段，识别中 Information 字段封装的协议。</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li>Information:信息字段,可以是任意长度，包含
+Protocol字段中指定的协议数据报。</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li>FCS:顿校验序列(FCS)字段,通常为 16 位(2B),也可以为4B。</li>
+</ol></li>
+</ul>
+<ol start="3" type="1">
+<li>PPP封装的优点
+<ul>
+<li>PPP封装不是基于公共标准的协议，包含了HDLC中没有的许多功能。</li>
+<li>链路质量管理功能监视链路的质量，如果链路质量差（检测到过多的错误），PPP会关闭链路。</li>
+<li>支持PPP和CHAP身份认证</li>
+</ul></li>
+</ol>
+<h4 id="认证">4. 认证</h4>
+<ol type="1">
+<li>PAP</li>
+</ol>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>密码验证协议（PAP）通过两握手机制，为建立远程节点的验证提供了一个简单的方法。PAP不是一种健壮的身份验证协议。身份验证时在链路上以明文发送，而且由于验证重试的频率和次数由远程节点来控制，因此不能防止回放攻击和重复的尝试攻击。</p>
+<ol start="2" type="1">
+<li>CHAP</li>
+</ol>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>挑战握手验证协议（CHAP）使用三次握手机制来启动一条链路和周期性的验证远程节点，它只在网络上传送用户名而不传送口令，被验证方将MD5算法生成的密文和自己的用户名发回验证方，有效避免再生攻击和尝试攻击。</p>
+<h4 id="配置命令">配置命令</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>配置命令详细见<a href="https://kikudzuki.github.io/2023/06/13/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/">常用配置命令</a></p>
 
     </div>
     
