@@ -3,7 +3,7 @@
 <html lang="zh-cn">
     <head>
         <meta charset="UTF-8">
-        <title>网络链路的负载均衡与冗余备份 | Kikudzukiの未来</title>
+        <title>访问控制列表 | Kikudzukiの未来</title>
         <meta name="author" content="Kikudzuki">
         <meta name="description" content="学习之路">
         <meta name="keywords" content="">
@@ -244,22 +244,22 @@ mjx-container[display="true"] + br {
 
                 <div class="article">
     <div>
-        <h1>网络链路的负载均衡与冗余备份 </h1>
+        <h1>访问控制列表 </h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/6/19
+            2023/6/21
         </span>
         
         <span class="category">
-            <a href="/categories/%E4%BC%81%E4%B8%9A%E5%B1%80%E5%9F%9F%E7%BD%91%E7%BB%84%E5%BB%BA%E5%AE%9E%E8%AE%AD/">
+            <a href="/categories/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
-                企业局域网组建实训
+                路由与交换技术
             </a>
         </span>
         
@@ -271,7 +271,7 @@ mjx-container[display="true"] + br {
             
             <span class="tag">
                 
-                <a href="/tags/%E4%BC%81%E4%B8%9A%E5%B1%80%E5%9F%9F%E7%BD%91%E7%BB%84%E5%BB%BA%E5%AE%9E%E8%AE%AD/" style="color: #03a9f4">企业局域网组建实训</a>
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #03a9f4">路由与交换技术</a>
             </span>
             
         </span>
@@ -279,117 +279,50 @@ mjx-container[display="true"] + br {
     </div>
     
     <div class="content" v-pre>
-        <p><b>任务：</b><br>
-按照OSI的第二层号第三层去查</p>
+        <p><b>本节学习内容：</b></p>
 <ol type="1">
-<li>网络链路的负载均衡</li>
-<li>网络链路的冗余备份</li>
+<li>ACL定义</li>
+<li>解决问题</li>
+<li>ACL类型</li>
+<li>包过滤流程</li>
 </ol>
 <span id="more"></span>
-<p><b>查询结果</b></p>
-<h3 id="网络链路的负载均衡">1. 网络链路的负载均衡</h3>
-<h4 id="osi第二层数据链路层">OSI第二层（数据链路层）：</h4>
+<h4 id="定义">1. 定义</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>访问控制列表(简称：ACL)是应用在路由器或三层交换机接口的指令列表，控制进入或流出端口的数据包。其用到的核心技术是包过滤。</p>
+<h4 id="解决问题">2. 解决问题</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>保证了内网的安全性，防止非授权用户非法设备破环系统安全，非法获取系统数据。</p>
+<h4 id="acl类型">3. ACL类型</h4>
 <ul>
-<li>my
+<li>标准控制列表
 <ul>
-<li>数据链路层的负载均衡实现是通过修改帧里的目的MAC实现</li>
+<li>根据数据包的源IP地址来允许或拒绝数据包</li>
+<li>访问控制列表号从0~99（ACL列表最多可以定义100条ACL语句）。</li>
+<li>标准的ACL配置时要靠近目的地址</li>
 </ul></li>
-<li>net
+<li>扩展控制列表
 <ul>
-<li>负载均衡器解析数据包，提取其中的源MAC地址或目标MAC地址，并根据一定的负载均衡算法，将数据包转发到相应的服务器上。</li>
-</ul></li>
-</ul>
-<h4 id="osi第三层网络层">OSI第三层（网络层）：</h4>
-<ul>
-<li>my
-<ul>
-<li>网络层的负载均衡实现是通过修改数据包里的目的IP地址实现</li>
-</ul></li>
-<li>net
-<ul>
-<li>负载均衡器解析数据包，提取源IP地址或目的IP地址，并根据一定的负载均衡算法，将数据包转发到相应的服务器上。</li>
+<li>扩展访问控制列表根据报文的源IP地址、目的IP地址、IP承载的协议类型、协议特性等三、四层信息制定规则。</li>
+<li>使用扩展ACL可以实现更加精确的流量控制访问控制，其编号取值范围是：100~199</li>
+<li>扩展的ACL配置时要靠近源地址</li>
 </ul></li>
 </ul>
-<h4 id="网络层的负载均衡优点">网络层的负载均衡优点：</h4>
-<ul>
-<li>my
-<ul>
-<li>网络层的数据包比数据链路层的数据帧能获取的信息更多，负载均衡的时候更灵活</li>
-</ul></li>
-<li>net
-<ul>
-<li>基于IP地址的三层负载均衡较基于MAC地址的二层负载均衡更灵活，因为它可以基于更多的信息进行决策，以便更好地处理应用层协议中的请求。</li>
-</ul></li>
-</ul>
-<h4 id="负载均衡算法常见">负载均衡算法（常见）：</h4>
-<p>服务器有多台，其中的数据一模一样。</p>
+<h4 id="包过滤流程">4. 包过滤流程</h4>
 <ol type="1">
-<li>轮询
-<ul>
-<li>对服务器依次发出请求</li>
-</ul></li>
-<li>加权轮询
-<ul>
-<li>对网络有个权重（权重参数可以取链路的带宽），根据权重值，对服务器发出请求</li>
-</ul></li>
-<li>随机
-<ul>
-<li>使用随机数，对服务器发去请求</li>
-</ul></li>
-<li>最小连接
-<ul>
-<li>服务器记录当前的连接数量，哪个服务器的连接数据最小，就对哪个服务器发出请求</li>
-</ul></li>
-<li>根据源地址（IP地址或MAC地址）的hash算法
-<ul>
-<li>根据源地址和服务器的数量使用hash算法，依据hash后的值选择对某台服务器发出请求</li>
-</ul></li>
+<li>入站</li>
 </ol>
-<h3 id="网络链路的冗余备份">2. 网络链路的冗余备份</h3>
-<h4 id="osi模型第二层数据链路层">OSI模型第二层（数据链路层）</h4>
-<ul>
-<li>my
-<ul>
-<li><ol type="1">
-<li>增加物理链路</li>
-</ol></li>
-<li><ol start="2" type="1">
-<li>链路聚合</li>
-</ol></li>
-<li><ol start="3" type="1">
-<li>链路恢复</li>
-</ol></li>
-</ul></li>
-</ul>
-<h4 id="osi模型第三层网络层">OSI模型第三层（网络层）</h4>
-<ul>
-<li>my
-<ul>
-<li>路由器冗余:
-<ul>
-<li>当主路由器出现故障时，备份路由器能够接管主路由器进行工作。作为冗余备份的设备如果不参与工作，将会导致有大量的资源浪费，为了避免这些资源被浪费，通过会使用VRRP技术虚拟出一个IP地址作为网关，通过一些的算法将数据发送至主路由器或备用路由器中，在增加网络的冗余时，也增加了网络的可靠性。</li>
-</ul></li>
-</ul></li>
-<li>net
-<ul>
-<li>路由器冗余：
-<ul>
-<li>通过配置多个路由器进行冗余备份，当主路由器出现故障时，备用路由器能够接管其任务，从而避免数据传输中断。</li>
-</ul></li>
-<li>IP地址冗余：
-<ul>
-<li>通过配置多个IP地址以及各自对应的路由器接口，将数据发送到指定的IP地址时，可以选择其中的一台路由器进行传输，同时备用路由器也会接收到这个数据包，从而实现冗余备份。</li>
-</ul></li>
-<li>可达性冗余：
-<ul>
-<li>通过建立多个逻辑链路，使网络中的主、从设备均可接收到数据，从而实现冗余备份。在主设备出现故障时，可以自动切换到备用设备，避免数据传输中断。</li>
-</ul></li>
-<li>策略路由：
-<ul>
-<li>通过在路由器之间动态配置路由策略，当一个链路或设备出现故障时，可以根据预设的策略选择最佳的传输路径，从而实现冗余备份。</li>
-</ul></li>
-</ul></li>
-</ul>
+<img src="https://kikudzuki.netlify.app/images/%E4%BC%81%E4%B8%9A%E5%B1%80%E5%9F%9F%E7%BD%91%E7%BB%84%E5%BB%BA%E5%AE%9E%E8%AE%AD/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E8%AF%BE/20230621103312.png"><br>
+
+<center>
+图一：包过滤入站
+</center>
+<ol start="2" type="1">
+<li>出站</li>
+</ol>
+<img src="https://kikudzuki.netlify.app/images/%E4%BC%81%E4%B8%9A%E5%B1%80%E5%9F%9F%E7%BD%91%E7%BB%84%E5%BB%BA%E5%AE%9E%E8%AE%AD/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E8%AF%BE/20230621103408.png"><br>
+
+<center>
+图二：包过滤出战
+</center>
 
     </div>
     
