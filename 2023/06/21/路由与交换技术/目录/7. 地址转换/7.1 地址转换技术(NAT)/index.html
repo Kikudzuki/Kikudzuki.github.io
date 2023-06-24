@@ -271,7 +271,7 @@ mjx-container[display="true"] + br {
             
             <span class="tag">
                 
-                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #ff7d73">路由与交换技术</a>
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #00a596">路由与交换技术</a>
             </span>
             
         </span>
@@ -326,6 +326,19 @@ translation），网络地址转换，它可以让那些使用私有地址的内
 <li>NAPT允许有多个内部地址映射到同一个公有地址的不同端口。</li>
 </ul></li>
 </ol>
+<h4 id="配置命令">6. 配置命令</h4>
+<pre class="配置命令"><code>access-list [序号] permit [网络号] [子网掩码]
+--- 序号：0-99为标准的访问控制列表 100-199为扩展的访问控制列表
+ip nat pool [nat池子名] [一组网络的开始地址] [一组网络的结束地址] netmask [子网掩码]
+--- nat池子名可以随意
+ip nat inside source list [序号] pool [nat池子名] overload
+--- overload 启用端口复用
+interface [内网端口]
+ip nat inside
+exit
+interface [外网端口]
+ip nat outside
+exit</code></pre>
 
     </div>
     

@@ -271,7 +271,7 @@ mjx-container[display="true"] + br {
             
             <span class="tag">
                 
-                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #00a596">路由与交换技术</a>
+                <a href="/tags/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/" style="color: #ff7d73">路由与交换技术</a>
             </span>
             
         </span>
@@ -279,10 +279,23 @@ mjx-container[display="true"] + br {
     </div>
     
     <div class="content" v-pre>
-        <h4 id="时代背景">1. 时代背景</h4>
-<p>解决互联网中两个不同的私有网络相互之间的通信</p>
+        <p><b>本节学习内容</b></p>
+<ol type="1">
+<li>时代背景</li>
+<li>前提知识</li>
+<li>GRE的定义</li>
+<li>工作原理</li>
+<li>配置命令</li>
+</ol>
+<span id="more"></span>
+<h4 id="时代背景">1. 时代背景</h4>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>通用路由协议(GRE)解决互联网中两个不同的私有网络相互之间的通信。</p>
 <h4 id="前提知识">2. 前提知识</h4>
-<p>数据报的格式</p>
+<p><span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.525ex" height="0.036ex" role="img" focusable="false" viewBox="0 0 2000 16"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mspace"></g></g></g></g></svg></mjx-container></span>对于本节内容，需要提前了解数据报的格式，其中主要了解数据报里的源IP地址和目的IP地址部分。</p>
+<p><img src="https://kikudzuki.netlify.app/images/%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF/%E7%9B%AE%E5%BD%95/VPN%E6%8A%80%E6%9C%AF/8.1/20230624223034.png"></p>
+<center>
+图一：数据报的格式
+</center>
 <h3 id="gre部分">GRE部分</h3>
 <h4 id="定义">3. 定义</h4>
 <p>通用路由协议(GRE)协议可以对某些网络协议的数据报进行封装，使这些被封装的数据报能够在另外一个网络层协议中传输。</p>
@@ -291,7 +304,12 @@ mjx-container[display="true"] + br {
 1. 进入隧道前的封装<br>
 2. 在隧道中的传输<br>
 3. 出去隧道后的解封装</p>
-<h4 id="应用">5. 应用</h4>
+<h4 id="配置命令">5. 配置命令</h4>
+<pre class="配置命令"><code>interface tunnel [端口号]
+ip address [ip地址] [子网掩码]
+tunnel source [路由器公网ip]
+tunnel destination [隧道出口的路由器公网ip]
+exit</code></pre>
 
     </div>
     
